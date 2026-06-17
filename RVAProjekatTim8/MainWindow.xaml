@@ -1,0 +1,50 @@
+﻿<Window
+    x:Class="RVAProjekatTim8.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:RVAProjekatTim8"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:views="clr-namespace:RVAProjekatTim8.Views"
+    Title="Informacioni sistem - Umetnički muzej"
+    Width="900"
+    Height="600"
+    WindowStartupLocation="CenterScreen"
+    mc:Ignorable="d">
+    <Grid Margin="12">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <!--
+            Globalni Undo/Redo, van taba — odnose se na CELU aplikaciju,
+            ne na trenutno prikazani tab (dogovor: jedinstvena istorija)
+        -->
+        <StackPanel
+            Grid.Row="0"
+            Margin="0,0,0,12"
+            Orientation="Horizontal">
+            <Button
+                Width="80"
+                Margin="0,0,8,0"
+                Command="{Binding UndoCommand}"
+                Content="Undo" />
+            <Button
+                Width="80"
+                Command="{Binding RedoCommand}"
+                Content="Redo" />
+        </StackPanel>
+
+        <TabControl Grid.Row="1">
+            <TabItem Header="Umetnička dela">
+                <views:ArtworkListView DataContext="{Binding ArtworkListViewModel}" />
+            </TabItem>
+            <TabItem Header="Praćenje stanja">
+                <views:ArtworkMonitoringListView DataContext="{Binding ArtworkMonitoringListViewModel}" />
+            </TabItem>
+        </TabControl>
+
+    </Grid>
+
+</Window>
