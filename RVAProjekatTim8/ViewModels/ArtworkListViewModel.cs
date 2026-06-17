@@ -6,6 +6,7 @@ using RVAProjekatTim8.Repositories;
 using RVAProjekatTim8.Services;
 using RVAProjekatTim8.Validators;
 using RVAProjekatTim8.Views;
+using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
@@ -56,14 +57,17 @@ namespace RVAProjekatTim8.ViewModels
 
         private void ExecuteAddArtwork(object? parameter)
         {
-            if (parameter is not Artwork newArtwork)
+            var newArtwork = new Artwork { Id = Guid.NewGuid() };
+            var editViewModel = new ArtworkEditViewModel(newArtwork, _artworkValidator);
+
+            var dialogResult = _dialogService.ShowDialog(editViewModel);
+
+            if (dialogResult == true)
             {
-                return;
+                var createdArtwork = editViewModel.ToModel();
+                var command = new AddArtworkCommand(Artworks, createdArtwork);
+                _commandHistory.ExecuteCommand(command);
             }
-
-
-            var command = new AddArtworkCommand(Artworks, newArtwork);
-            _commandHistory.ExecuteCommand(command);
         }
 
         private void ExecuteDeleteArtwork(object? parameter)
