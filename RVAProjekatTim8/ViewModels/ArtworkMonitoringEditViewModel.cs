@@ -1,7 +1,7 @@
-﻿using RVAProjekatTim8.Enums;
+﻿using Common.Enums;
 using RVAProjekatTim8.Helpers;
 using RVAProjekatTim8.Interfaces;
-using RVAProjekatTim8.Model;
+using Common.Models;
 using RVAProjekatTim8.Validators;
 using System;
 using System.Collections.Generic;

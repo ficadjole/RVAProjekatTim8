@@ -1,4 +1,4 @@
-﻿namespace RVAProjekatTim8.Enums
+﻿namespace Common.Enums
 {
     public enum ArtworkCondition
     {

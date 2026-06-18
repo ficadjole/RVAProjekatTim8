@@ -1,5 +1,5 @@
 ﻿using RVAProjekatTim8.Interfaces;
-using RVAProjekatTim8.Model;
+using Common.Models;
 using System.Collections.ObjectModel;
 
 namespace RVAProjekatTim8.Commands

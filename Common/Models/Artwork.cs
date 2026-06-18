@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace RVAProjekatTim8.Model
+namespace Common.Models
 {
     public class Artwork
     {

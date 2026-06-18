@@ -1,8 +1,8 @@
-﻿using RVAProjekatTim8.Enums;
+﻿using Common.Enums;
 using System;
 using System.ComponentModel;
 
-namespace RVAProjekatTim8.Model
+namespace Common.Models
 {
     public class ArtworkMonitoring : INotifyPropertyChanged
     {

@@ -6,19 +6,62 @@
     xmlns:local="clr-namespace:RVAProjekatTim8.Views"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     d:DesignHeight="50"
-    d:DesignWidth="170"
+    d:DesignWidth="140"
     mc:Ignorable="d">
-    <Grid>
-        <StackPanel Margin="0,8,0,0" Orientation="Horizontal">
-            <Button
-                Width="80"
-                Margin="0,0,8,0"
-                Command="{Binding UndoCommand}"
-                Content="Undo" />
-            <Button
-                Width="80"
-                Command="{Binding RedoCommand}"
-                Content="Redo" />
+
+    <UserControl.Resources>
+        <Style x:Key="ToolbarButtonStyle" TargetType="Button">
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Width" Value="45"/>
+            <Setter Property="Height" Value="32"/>
+            <Setter Property="Margin" Value="0,0,6,0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Background" Value="#FFFFFF"/>
+            <Setter Property="BorderBrush" Value="#CBD5E0"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Foreground" Value="#4A5568"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="btnBorder" 
+                                Background="{TemplateBinding Background}" 
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="4" 
+                                SnapsToDevicePixels="True">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="btnBorder" Property="Background" Value="#EDF2F7"/>
+                                <Setter TargetName="btnBorder" Property="BorderBrush" Value="#A0AEC0"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="btnBorder" Property="Background" Value="#E2E8F0"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter TargetName="btnBorder" Property="Opacity" Value="0.4"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+
+    <Grid Margin="5">
+        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+
+            <Button Style="{StaticResource ToolbarButtonStyle}"
+                    Command="{Binding UndoCommand}"
+                    Content="Undo" 
+                    ToolTip="Poništi poslednju akciju (Undo)"/>
+
+            <Button Style="{StaticResource ToolbarButtonStyle}"
+                    Command="{Binding RedoCommand}"
+                    Content="Redo" 
+                    ToolTip="Ponovi poništenu akciju (Redo)"/>
+
         </StackPanel>
     </Grid>
 </UserControl>

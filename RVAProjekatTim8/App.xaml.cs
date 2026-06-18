@@ -1,11 +1,13 @@
-﻿using RVAProjekatTim8.Interfaces;
-using RVAProjekatTim8.Model;
+﻿using Common.Interfaces;
+using Common.Models;
+using RVAProjekatTim8.Interfaces;
 using RVAProjekatTim8.Repositories;
 using RVAProjekatTim8.Services;
 using RVAProjekatTim8.Validators;
 using RVAProjekatTim8.ViewModels;
 using System;
 using System.Collections.ObjectModel;
+using System.ServiceModel;
 using System.Windows;
 
 namespace RVAProjekatTim8
@@ -17,6 +19,7 @@ namespace RVAProjekatTim8
     {
         private ArtworkRepository artworkRepository;
         private ArtworkMonitoringRepository artworkMonitoringRepository;
+        private ServiceHost _serviceHost;
 
         protected override void OnStartup(StartupEventArgs e)
         {
@@ -34,6 +37,14 @@ namespace RVAProjekatTim8
                 new JsonPersistenceService<ArtworkMonitoring>("Data/monitorings.json"),
                 () => new ArtworkMonitoringInitialDataProvider(artworkRepository.Artworks));
             artworkMonitoringRepository.Load();
+
+            var artworkService = new ArtworkService(artworkRepository, artworkMonitoringRepository);
+            _serviceHost = new ServiceHost(artworkService, new Uri("net.tcp://localhost:8523/ArtworkService"));
+            _serviceHost.AddServiceEndpoint(
+                typeof(IArtworkService),
+                new NetTcpBinding(),
+                "net.tcp://localhost:8523/ArtworkService");
+            _serviceHost.Open();
 
             // --- 2. Validatori (Strategy implementacije) ---
 
@@ -85,6 +96,7 @@ namespace RVAProjekatTim8
         {
             artworkRepository?.Save();
             artworkMonitoringRepository?.Save();
+            _serviceHost?.Close();
             base.OnExit(e);
         }
     }

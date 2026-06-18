@@ -1,5 +1,6 @@
 ﻿using RVAProjekatTim8.Interfaces;
-using RVAProjekatTim8.Model;
+using Common.Models;
+using Common.Interfaces;
 
 using System.Collections.ObjectModel;
 

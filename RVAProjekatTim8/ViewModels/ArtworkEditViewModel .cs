@@ -1,6 +1,6 @@
 ﻿using RVAProjekatTim8.Helpers;
 using RVAProjekatTim8.Interfaces;
-using RVAProjekatTim8.Model;
+using Common.Models;
 using RVAProjekatTim8.Validators;
 using System;
 using System.ComponentModel;

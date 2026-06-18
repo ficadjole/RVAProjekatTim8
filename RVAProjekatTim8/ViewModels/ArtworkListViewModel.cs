@@ -1,7 +1,7 @@
 ﻿using RVAProjekatTim8.Commands;
 using RVAProjekatTim8.Helpers;
 using RVAProjekatTim8.Interfaces;
-using RVAProjekatTim8.Model;
+using Common.Models;
 using RVAProjekatTim8.Repositories;
 using RVAProjekatTim8.Services;
 using RVAProjekatTim8.Validators;

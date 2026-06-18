@@ -7,13 +7,43 @@
     xmlns:lvc="clr-namespace:LiveChartsCore.SkiaSharpView.WPF;assembly=LiveChartsCore.SkiaSharpView.WPF"
     xmlns:lvcMeasure="clr-namespace:LiveChartsCore.Measure;assembly=LiveChartsCore"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    d:DesignHeight="450"
-    d:DesignWidth="800"
+    d:DesignHeight="500"
+    d:DesignWidth="850"
     mc:Ignorable="d">
-    <Grid Margin="12">
+
+    <UserControl.Resources>
+        <Style x:Key="CrudButtonStyle" TargetType="Button">
+            <Setter Property="FontSize" Value="13" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="Width" Value="90" />
+            <Setter Property="Height" Value="36"/>
+            <Setter Property="Margin" Value="0,0,10,0" />
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="btnBorder" Background="{TemplateBinding Background}" CornerRadius="4" SnapsToDevicePixels="True">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter TargetName="btnBorder" Property="Opacity" Value="0.5"/>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="btnBorder" Property="Opacity" Value="0.9"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+
+    <Grid Background="#F8FAFC" Margin="20">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="2*" />
-            <ColumnDefinition Width="12" />
+            <ColumnDefinition Width="20" />
             <ColumnDefinition Width="1*" />
         </Grid.ColumnDefinitions>
 
@@ -22,73 +52,108 @@
                 <RowDefinition Height="*" />
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
-            <DataGrid
-                Grid.Row="0"
-                AutoGenerateColumns="False"
-                IsReadOnly="True"
-                ItemsSource="{Binding Monitorings}"
-                SelectedItem="{Binding SelectedMonitoring}">
-                <DataGrid.Columns>
-                    <DataGridTextColumn
-                        Width="*"
-                        Binding="{Binding ArtworkId}"
-                        Header="Delo (Id)" />
-                    <DataGridTextColumn
-                        Width="*"
-                        Binding="{Binding MonitoringTime}"
-                        Header="Vreme merenja" />
-                    <DataGridTextColumn
-                        Width="Auto"
-                        Binding="{Binding LightExposure}"
-                        Header="Svetlost (lux)" />
-                    <DataGridTextColumn
-                        Width="Auto"
-                        Binding="{Binding AirPollution}"
-                        Header="Zagađenje (μg/m³)" />
-                    <DataGridTextColumn
-                        Width="Auto"
-                        Binding="{Binding State}"
-                        Header="Stanje" />
-                </DataGrid.Columns>
-            </DataGrid>
-            <StackPanel
-                Grid.Row="1"
-                Margin="0,8,0,0"
-                Orientation="Horizontal">
-                <Button
-                    Width="80"
-                    Margin="0,0,8,0"
-                    Command="{Binding AddMonitoringCommand}"
-                    Content="Dodaj" />
-                <Button
-                    Width="80"
-                    Margin="0,0,8,0"
-                    Command="{Binding EditMonitoringCommand}"
-                    Content="Izmeni" />
-                <Button
-                    Width="80"
-                    Command="{Binding DeleteMonitoringCommand}"
-                    Content="Obriši" />
+
+            <Border Grid.Row="0" Background="White" CornerRadius="6" BorderBrush="#E2E8F0" BorderThickness="1" Padding="5">
+                <Border.Effect>
+                    <DropShadowEffect BlurRadius="10" Direction="270" ShadowDepth="1" Opacity="0.05"/>
+                </Border.Effect>
+
+                <DataGrid
+                    AutoGenerateColumns="False"
+                    IsReadOnly="True"
+                    ItemsSource="{Binding Monitorings}"
+                    SelectedItem="{Binding SelectedMonitoring}"
+                    Background="Transparent"
+                    BorderThickness="0"
+                    RowHeight="38"
+                    GridLinesVisibility="Horizontal"
+                    HorizontalGridLinesBrush="#E2E8F0"
+                    HeadersVisibility="Column"
+                    SelectionMode="Single"
+                    CanUserAddRows="False">
+
+                    <DataGrid.ColumnHeaderStyle>
+                        <Style TargetType="DataGridColumnHeader">
+                            <Setter Property="Background" Value="#EDF2F7" />
+                            <Setter Property="Foreground" Value="#2D3748" />
+                            <Setter Property="FontWeight" Value="Bold" />
+                            <Setter Property="Height" Value="35"/>
+                            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                            <Setter Property="VerticalContentAlignment" Value="Center"/>
+                            <Setter Property="BorderThickness" Value="0,0,0,2" />
+                            <Setter Property="BorderBrush" Value="#CBD5E0" />
+                        </Style>
+                    </DataGrid.ColumnHeaderStyle>
+
+                    <DataGrid.RowStyle>
+                        <Style TargetType="DataGridRow">
+                            <Setter Property="Background" Value="White" />
+                            <Setter Property="Foreground" Value="#2D3748" />
+                            <Setter Property="FontSize" Value="13" />
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="#F7FAFC" />
+                                </Trigger>
+                                <Trigger Property="IsSelected" Value="True">
+                                    <Setter Property="Background" Value="#EBF8FF" />
+                                    <Setter Property="Foreground" Value="#2B6CB0" />
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </DataGrid.RowStyle>
+
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Width="70" Binding="{Binding ArtworkId}" Header="Delo (ID)" />
+                        <DataGridTextColumn Width="*" Binding="{Binding MonitoringTime, StringFormat=\{0:dd.MM.yyyy. HH:mm\}}" Header="Vreme merenja" />
+                        <DataGridTextColumn Width="110" Binding="{Binding LightExposure}" Header="Svetlost (lux)" />
+                        <DataGridTextColumn Width="130" Binding="{Binding AirPollution}" Header="Zagađenje (μg/m³)" />
+                        <DataGridTextColumn Width="*" Binding="{Binding State}" Header="Stanje" />
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Border>
+
+            <StackPanel Grid.Row="1" Margin="0,15,0,0" Orientation="Horizontal">
+                <Button Style="{StaticResource CrudButtonStyle}"
+                        Background="#319795"
+                        Command="{Binding AddMonitoringCommand}"
+                        Content="Dodaj" />
+
+                <Button Style="{StaticResource CrudButtonStyle}"
+                        Background="#2B6CB0"
+                        Command="{Binding EditMonitoringCommand}"
+                        Content="Izmeni" />
+
+                <Button Style="{StaticResource CrudButtonStyle}"
+                        Background="#E53E3E"
+                        Command="{Binding DeleteMonitoringCommand}"
+                        Content="Obriši" />
             </StackPanel>
         </Grid>
 
-        <Border
-            Grid.Column="2"
-            Padding="12"
-            Background="#FAFAFA"
-            BorderBrush="#DDDDDD"
-            BorderThickness="1"
-            CornerRadius="6">
+        <Border Grid.Column="2"
+                Background="White"
+                BorderBrush="#E2E8F0"
+                BorderThickness="1"
+                CornerRadius="6"
+                Padding="15">
+            <Border.Effect>
+                <DropShadowEffect BlurRadius="10" Direction="270" ShadowDepth="1" Opacity="0.05"/>
+            </Border.Effect>
+
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
-                <TextBlock
-                    Grid.Row="0"
-                    Margin="0,0,0,8"
-                    FontWeight="SemiBold"
-                    Text="Pregled stanja (uživo)" />
+
+                <TextBlock Grid.Row="0"
+                           FontSize="14"
+                           FontWeight="Bold"
+                           Foreground="#2D3748"
+                           Margin="0,0,0,15"
+                           HorizontalAlignment="Center"
+                           Text="Pregled stanja (uživo)" />
+
                 <lvc:PieChart
                     Grid.Row="1"
                     LegendPosition="{x:Static lvcMeasure:LegendPosition.Bottom}"

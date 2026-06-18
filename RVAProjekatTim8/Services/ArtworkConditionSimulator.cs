@@ -1,5 +1,5 @@
-﻿using RVAProjekatTim8.Enums;
-using RVAProjekatTim8.Model;
+﻿using Common.Enums;
+using Common.Models;
 using System;
 using System.Collections.Generic;
 using System.Windows.Threading;

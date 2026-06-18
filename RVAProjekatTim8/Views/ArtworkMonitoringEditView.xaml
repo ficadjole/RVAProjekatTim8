@@ -5,37 +5,153 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:RVAProjekatTim8.Views"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d">
-    <StackPanel Width="320" Margin="12">
-        <TextBlock Text="Umetničko delo:" />
-        <ComboBox
-            DisplayMemberPath="Title"
-            ItemsSource="{Binding AvailableArtworks}"
-            SelectedValue="{Binding ArtworkId, ValidatesOnDataErrors=True}"
-            SelectedValuePath="Id" />
+    mc:Ignorable="d"
+    d:DesignHeight="550"
+    d:DesignWidth="450">
 
-        <TextBlock Margin="0,8,0,0" Text="Vreme merenja:" />
-        <DatePicker SelectedDate="{Binding MonitoringTime, ValidatesOnDataErrors=True}" />
+    <UserControl.Resources>
+        <Style TargetType="TextBox">
+            <Setter Property="Margin" Value="0,4,0,12" />
+            <Setter Property="FontSize" Value="13" />
+            <Setter Property="Background" Value="#FFFFFF" />
+            <Setter Property="BorderBrush" Value="#CCCCCC" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="Foreground" Value="#333333" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <Border x:Name="border" 
+                                BorderBrush="{TemplateBinding BorderBrush}" 
+                                BorderThickness="{TemplateBinding BorderThickness}" 
+                                Background="{TemplateBinding Background}" 
+                                CornerRadius="4" 
+                                SnapsToDevicePixels="True">
+                            <ScrollViewer x:Name="PART_ContentHost" Focusable="false" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden" Margin="8,6"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="true">
+                                <Setter TargetName="border" Property="BorderBrush" Value="#2A73D2"/>
+                            </Trigger>
+                            <Trigger Property="IsFocused" Value="true">
+                                <Setter TargetName="border" Property="BorderBrush" Value="#2A73D2"/>
+                                <Setter TargetName="border" Property="BorderThickness" Value="1.5"/>
+                            </Trigger>
+                            <Trigger Property="Validation.HasError" Value="true">
+                                <Setter TargetName="border" Property="BorderBrush" Value="#D32F2F"/>
+                                <Setter TargetName="border" Property="BorderThickness" Value="1.5"/>
+                                <Setter Property="ToolTip" Value="{Binding RelativeSource={RelativeSource Self}, Path=(Validation.Errors).CurrentItem.ErrorContent}" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
 
-        <TextBlock Margin="0,8,0,0" Text="Izloženost svetlosti (lux):" />
-        <TextBox Text="{Binding LightExposure, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" />
+        <Style TargetType="ComboBox">
+            <Setter Property="Margin" Value="0,4,0,12"/>
+            <Setter Property="Height" Value="32"/>
+            <Setter Property="FontSize" Value="13"/>
+        </Style>
 
-        <TextBlock Margin="0,8,0,0" Text="Zagađenost vazduha (μg/m³):" />
-        <TextBox Text="{Binding AirPollution, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" />
+        <Style TargetType="DatePicker">
+            <Setter Property="Margin" Value="0,4,0,12"/>
+            <Setter Property="Height" Value="32"/>
+            <Setter Property="FontSize" Value="13"/>
+        </Style>
 
-        <TextBlock Margin="0,8,0,0" Text="Stanje:" />
-        <ComboBox ItemsSource="{Binding AvailableStates}" SelectedItem="{Binding State}" />
+        <Style TargetType="TextBlock">
+            <Setter Property="FontSize" Value="13" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="Foreground" Value="#333333" />
+        </Style>
 
-        <StackPanel Margin="0,16,0,0" Orientation="Horizontal">
-            <Button
-                Width="80"
-                Margin="0,0,8,0"
-                Command="{Binding SaveCommand}"
-                Content="Sačuvaj" />
-            <Button
-                Width="80"
-                Command="{Binding CancelCommand}"
-                Content="Otkaži" />
-        </StackPanel>
-    </StackPanel>
+        <Style x:Key="FormButtonStyle" TargetType="Button">
+            <Setter Property="FontSize" Value="13" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="Height" Value="36"/>
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="btnBorder" Background="{TemplateBinding Background}" CornerRadius="4" SnapsToDevicePixels="True">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter TargetName="btnBorder" Property="Opacity" Value="0.5"/>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="btnBorder" Property="Opacity" Value="0.9"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+
+    <Grid Background="#F5F7FA">
+        <Border Background="White" 
+                CornerRadius="8" 
+                Margin="20" 
+                Padding="25"
+                MaxWidth="380"
+                VerticalAlignment="Center">
+            <Border.Effect>
+                <DropShadowEffect BlurRadius="15" Direction="270" ShadowDepth="2" Opacity="0.1"/>
+            </Border.Effect>
+
+            <StackPanel>
+                <TextBlock Text="Unos Monitornga i Merenja" 
+                           FontSize="18" 
+                           FontWeight="Bold" 
+                           Foreground="#1A202C" 
+                           Margin="0,0,0,20" 
+                           HorizontalAlignment="Center"/>
+
+                <TextBlock Text="Umetničko delo:" />
+                <ComboBox
+                    DisplayMemberPath="Title"
+                    ItemsSource="{Binding AvailableArtworks}"
+                    SelectedValue="{Binding ArtworkId, ValidatesOnDataErrors=True}"
+                    SelectedValuePath="Id" />
+
+                <TextBlock Text="Vreme merenja:" />
+                <DatePicker SelectedDate="{Binding MonitoringTime, ValidatesOnDataErrors=True}" />
+
+                <TextBlock Text="Izloženost svetlosti (lux):" />
+                <TextBox Text="{Binding LightExposure, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" />
+
+                <TextBlock Text="Zagađenost vazduha (μg/m³):" />
+                <TextBox Text="{Binding AirPollution, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" />
+
+                <TextBlock Text="Stanje:" />
+                <ComboBox ItemsSource="{Binding AvailableStates}" SelectedItem="{Binding State}" />
+
+                <Grid Margin="0,10,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
+                    <Button Grid.Column="0"
+                            Style="{StaticResource FormButtonStyle}"
+                            Background="#E2E8F0"
+                            Foreground="#4A5568"
+                            Margin="0,0,6,0"
+                            Command="{Binding CancelCommand}"
+                            Content="Otkaži" />
+
+                    <Button Grid.Column="1"
+                            Style="{StaticResource FormButtonStyle}"
+                            Background="#2A73D2"
+                            Foreground="White"
+                            Margin="6,0,0,0"
+                            Command="{Binding SaveCommand}"
+                            Content="Sačuvaj" />
+                </Grid>
+            </StackPanel>
+        </Border>
+    </Grid>
 </UserControl>
