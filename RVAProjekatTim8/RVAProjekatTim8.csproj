@@ -115,6 +115,7 @@
     <Compile Include="Services\JsonPersistenceService.cs" />
     <Compile Include="ViewModels\ArtworkEditViewModel .cs" />
     <Compile Include="ViewModels\ArtworkListViewModel.cs" />
+    <Compile Include="ViewModels\ArtworkMonitoringEditViewModel.cs" />
     <Compile Include="ViewModels\ArtworkMonitoringListViewModel.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="Views\ArtworkEditView.xaml.cs">
@@ -122,6 +123,9 @@
     </Compile>
     <Compile Include="Views\ArtworkListView.xaml.cs">
       <DependentUpon>ArtworkListView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ArtworkMonitoringEditView.xaml.cs">
+      <DependentUpon>ArtworkMonitoringEditView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ArtworkMonitoringListView.xaml.cs">
       <DependentUpon>ArtworkMonitoringListView.xaml</DependentUpon>
@@ -147,6 +151,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ArtworkListView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ArtworkMonitoringEditView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

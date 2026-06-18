@@ -9,7 +9,9 @@ using RVAProjekatTim8.Views;
 using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Windows.Data;
 using System.Windows.Input;
 
 namespace RVAProjekatTim8.ViewModels
@@ -20,7 +22,7 @@ namespace RVAProjekatTim8.ViewModels
         private readonly IDialogService _dialogService;
         private readonly IValidator<Artwork> _artworkValidator;
         private readonly ArtworkRepository _artworkRepository;
-
+        private readonly ICollectionView _artworksView;
         /// <summary>
         /// Izlaže direktno repository kolekciju. DataGrid u ArtworkListView.xaml
         /// bind-uje se na ovo svojstvo i automatski reaguje na CollectionChanged
@@ -39,6 +41,20 @@ namespace RVAProjekatTim8.ViewModels
             set => SetProperty(ref _selectedArtwork, value);
         }
 
+        private string _searchText = string.Empty;
+
+        public string SearchText
+        {
+            get => _searchText;
+            set
+            {
+                if (_searchText == value) return;
+
+                SetProperty(ref _searchText, value);
+                _artworksView.Refresh();
+            }
+        }
+
         public ArtworkListViewModel(
             CommandHistory commandHistory,
             IDialogService dialogService,
@@ -49,6 +65,9 @@ namespace RVAProjekatTim8.ViewModels
             _dialogService = dialogService;
             _artworkValidator = artworkValidator;
             _artworkRepository = artworkRepository;
+
+            _artworksView = CollectionViewSource.GetDefaultView(Artworks);
+            _artworksView.Filter = FilterArtwork;
 
             AddArtworkCommand = new RelayCommand(ExecuteAddArtwork);
             DeleteArtworkCommand = new RelayCommand(ExecuteDeleteArtwork, CanDeleteArtwork);
@@ -130,6 +149,29 @@ namespace RVAProjekatTim8.ViewModels
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
             (DeleteArtworkCommand as RelayCommand)?.RaiseCanExecuteChanged();
             (EditArtworkCommand as RelayCommand)?.RaiseCanExecuteChanged();
+        }
+
+        public ICollectionView FilteredArtworks => _artworksView;
+
+        private bool FilterArtwork(object item)
+        {
+            if (string.IsNullOrWhiteSpace(SearchText))
+            {
+                return true;
+            }
+
+            if (item is not Artwork artwork)
+            {
+                return false;
+            }
+
+            var search = SearchText.Trim().ToLower();
+
+            return (artwork.Title?.ToLower().Contains(search) ?? false)
+                || (artwork.Artist?.ToLower().Contains(search) ?? false)
+                || (artwork.Medium?.ToLower().Contains(search) ?? false)
+                || (artwork.Style?.ToLower().Contains(search) ?? false)
+                || artwork.YearCreated.ToString().Contains(search);
         }
     }
 }

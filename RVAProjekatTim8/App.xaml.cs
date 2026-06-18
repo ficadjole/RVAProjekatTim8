@@ -14,6 +14,9 @@ namespace RVAProjekatTim8
     /// </summary>
     public partial class App : Application
     {
+        private ArtworkRepository artworkRepository;
+        private ArtworkMonitoringRepository artworkMonitoringRepository;
+
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
@@ -21,15 +24,15 @@ namespace RVAProjekatTim8
             // --- 1. Persistencija i repozitorijumi (redosled je bitan:
             //        Artwork pre ArtworkMonitoring, zbog FK zavisnosti) ---
 
-            var artworkRepository = new ArtworkRepository(
+            artworkRepository = new ArtworkRepository(
                 new JsonPersistenceService<Artwork>("Data/artworks.json"),
                 new ArtworkInitialDataProvider());
             artworkRepository.Load();
 
-            var monitoringRepository = new ArtworkMonitoringRepository(
+            artworkMonitoringRepository = new ArtworkMonitoringRepository(
                 new JsonPersistenceService<ArtworkMonitoring>("Data/monitorings.json"),
                 () => new ArtworkMonitoringInitialDataProvider(artworkRepository.Artworks));
-            monitoringRepository.Load();
+            artworkMonitoringRepository.Load();
 
             // --- 2. Validatori (Strategy implementacije) ---
 
@@ -57,8 +60,10 @@ namespace RVAProjekatTim8
 
             var artworkMonitoringListViewModel = new ArtworkMonitoringListViewModel(
                 commandHistory,
-                monitoringRepository,
-                new ReadOnlyObservableCollection<Artwork>(artworkRepository.Artworks));
+                artworkMonitoringRepository,
+                new ReadOnlyObservableCollection<Artwork>(artworkRepository.Artworks),
+                dialogService,
+                monitoringValidator);
 
             // --- 6. Glavni ViewModel i prozor ---
 
@@ -74,8 +79,8 @@ namespace RVAProjekatTim8
 
         protected override void OnExit(ExitEventArgs e)
         {
-            // Mesto za eksplicitan Save() poziv na repozitorijume — vidi
-            // otvoreno pitanje iz prethodnog koraka o auto-save vs eksplicitno.
+            artworkRepository?.Save();
+            artworkMonitoringRepository?.Save();
             base.OnExit(e);
         }
     }

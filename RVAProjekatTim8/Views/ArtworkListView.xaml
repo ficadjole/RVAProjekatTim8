@@ -10,15 +10,27 @@
     mc:Ignorable="d">
     <Grid Margin="12">
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <DataGrid
+        <StackPanel
             Grid.Row="0"
+            Margin="0,0,0,8"
+            Orientation="Horizontal">
+            <TextBlock
+                Margin="0,0,8,0"
+                VerticalAlignment="Center"
+                Text="Pretraga:" />
+            <TextBox Width="250" Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}" />
+        </StackPanel>
+
+        <DataGrid
+            Grid.Row="1"
             AutoGenerateColumns="False"
             IsReadOnly="True"
-            ItemsSource="{Binding Artworks}"
+            ItemsSource="{Binding FilteredArtworks}"
             SelectedItem="{Binding SelectedArtwork}">
             <DataGrid.Columns>
                 <DataGridTextColumn
@@ -45,7 +57,7 @@
         </DataGrid>
 
         <StackPanel
-            Grid.Row="1"
+            Grid.Row="2"
             Margin="0,8,0,0"
             Orientation="Horizontal">
             <Button
