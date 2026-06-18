@@ -21,12 +21,14 @@ namespace RVAProjekatTim8.ViewModels
         private readonly ReadOnlyObservableCollection<Artwork> _availableArtworks;
         private readonly IDialogService _dialogService;
         private readonly IValidator<ArtworkMonitoring> _monitoringValidator;
+        private readonly ArtworkConditionSimulator _simulator;
 
         public ObservableCollection<ArtworkMonitoring> Monitorings => _monitoringRepository.Monitorings;
 
         public ICommand AddMonitoringCommand { get; }
         public ICommand EditMonitoringCommand { get; }
         public ICommand DeleteMonitoringCommand { get; }
+        public ArtworkConditionChartViewModel ChartViewModel { get; }
 
         private ArtworkMonitoring? _selectedMonitoring;
         public ArtworkMonitoring? SelectedMonitoring
@@ -40,17 +42,41 @@ namespace RVAProjekatTim8.ViewModels
             ArtworkMonitoringRepository monitoringRepository,
             ReadOnlyObservableCollection<Artwork> availableArtworks,
             IDialogService dialogService,
-            IValidator<ArtworkMonitoring> monitoringValidator)
+            IValidator<ArtworkMonitoring> monitoringValidator,
+            ArtworkConditionSimulator simulator)
         {
             _commandHistory = commandHistory;
             _monitoringRepository = monitoringRepository;
             _availableArtworks = availableArtworks;
             _dialogService = dialogService;
             _monitoringValidator = monitoringValidator;
+            _simulator = simulator;
 
             AddMonitoringCommand = new RelayCommand(ExecuteAddMonitoring);
             EditMonitoringCommand = new RelayCommand(ExecuteEditMonitoring, CanEditMonitoring);
             DeleteMonitoringCommand = new RelayCommand(ExecuteDeleteMonitoring, CanDeleteMonitoring);
+
+            Monitorings.CollectionChanged += OnMonitoringsCollectionChanged;
+            ChartViewModel = new ArtworkConditionChartViewModel(Monitorings);
+        }
+
+        private void OnMonitoringsCollectionChanged(object? sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            if (e.OldItems is not null)
+            {
+                foreach (ArtworkMonitoring removed in e.OldItems)
+                {
+                    _simulator.StopSimulating(removed.Id);
+                }
+            }
+
+            if (e.NewItems is not null)
+            {
+                foreach (ArtworkMonitoring added in e.NewItems)
+                {
+                    _simulator.StartSimulating(added);
+                }
+            }
         }
 
         private void ExecuteAddMonitoring(object? parameter)

@@ -4,6 +4,7 @@ using RVAProjekatTim8.Repositories;
 using RVAProjekatTim8.Services;
 using RVAProjekatTim8.Validators;
 using RVAProjekatTim8.ViewModels;
+using System;
 using System.Collections.ObjectModel;
 using System.Windows;
 
@@ -58,12 +59,15 @@ namespace RVAProjekatTim8
                 artworkValidator,
                 artworkRepository);
 
+            var conditionSimulator = new ArtworkConditionSimulator(TimeSpan.FromSeconds(7));
+
             var artworkMonitoringListViewModel = new ArtworkMonitoringListViewModel(
                 commandHistory,
                 artworkMonitoringRepository,
                 new ReadOnlyObservableCollection<Artwork>(artworkRepository.Artworks),
                 dialogService,
-                monitoringValidator);
+                monitoringValidator,
+                conditionSimulator);
 
             // --- 6. Glavni ViewModel i prozor ---
 

@@ -4,64 +4,96 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:RVAProjekatTim8.Views"
+    xmlns:lvc="clr-namespace:LiveChartsCore.SkiaSharpView.WPF;assembly=LiveChartsCore.SkiaSharpView.WPF"
+    xmlns:lvcMeasure="clr-namespace:LiveChartsCore.Measure;assembly=LiveChartsCore"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     d:DesignHeight="450"
     d:DesignWidth="800"
     mc:Ignorable="d">
     <Grid Margin="12">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*" />
-            <RowDefinition Height="Auto" />
-        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*" />
+            <ColumnDefinition Width="12" />
+            <ColumnDefinition Width="1*" />
+        </Grid.ColumnDefinitions>
 
-        <DataGrid
-            Grid.Row="0"
-            AutoGenerateColumns="False"
-            IsReadOnly="True"
-            ItemsSource="{Binding Monitorings}"
-            SelectedItem="{Binding SelectedMonitoring}">
-            <DataGrid.Columns>
-                <DataGridTextColumn
-                    Width="*"
-                    Binding="{Binding ArtworkId}"
-                    Header="Delo (Id)" />
-                <DataGridTextColumn
-                    Width="*"
-                    Binding="{Binding MonitoringTime}"
-                    Header="Vreme merenja" />
-                <DataGridTextColumn
-                    Width="Auto"
-                    Binding="{Binding LightExposure}"
-                    Header="Svetlost (lux)" />
-                <DataGridTextColumn
-                    Width="Auto"
-                    Binding="{Binding AirPollution}"
-                    Header="Zagađenje (μg/m³)" />
-                <DataGridTextColumn
-                    Width="Auto"
-                    Binding="{Binding State}"
-                    Header="Stanje" />
-            </DataGrid.Columns>
-        </DataGrid>
+        <Grid Grid.Column="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <DataGrid
+                Grid.Row="0"
+                AutoGenerateColumns="False"
+                IsReadOnly="True"
+                ItemsSource="{Binding Monitorings}"
+                SelectedItem="{Binding SelectedMonitoring}">
+                <DataGrid.Columns>
+                    <DataGridTextColumn
+                        Width="*"
+                        Binding="{Binding ArtworkId}"
+                        Header="Delo (Id)" />
+                    <DataGridTextColumn
+                        Width="*"
+                        Binding="{Binding MonitoringTime}"
+                        Header="Vreme merenja" />
+                    <DataGridTextColumn
+                        Width="Auto"
+                        Binding="{Binding LightExposure}"
+                        Header="Svetlost (lux)" />
+                    <DataGridTextColumn
+                        Width="Auto"
+                        Binding="{Binding AirPollution}"
+                        Header="Zagađenje (μg/m³)" />
+                    <DataGridTextColumn
+                        Width="Auto"
+                        Binding="{Binding State}"
+                        Header="Stanje" />
+                </DataGrid.Columns>
+            </DataGrid>
+            <StackPanel
+                Grid.Row="1"
+                Margin="0,8,0,0"
+                Orientation="Horizontal">
+                <Button
+                    Width="80"
+                    Margin="0,0,8,0"
+                    Command="{Binding AddMonitoringCommand}"
+                    Content="Dodaj" />
+                <Button
+                    Width="80"
+                    Margin="0,0,8,0"
+                    Command="{Binding EditMonitoringCommand}"
+                    Content="Izmeni" />
+                <Button
+                    Width="80"
+                    Command="{Binding DeleteMonitoringCommand}"
+                    Content="Obriši" />
+            </StackPanel>
+        </Grid>
 
-        <StackPanel
-            Grid.Row="1"
-            Margin="0,8,0,0"
-            Orientation="Horizontal">
-            <Button
-                Width="80"
-                Margin="0,0,8,0"
-                Command="{Binding AddMonitoringCommand}"
-                Content="Dodaj" />
-            <Button
-                Width="80"
-                Margin="0,0,8,0"
-                Command="{Binding EditMonitoringCommand}"
-                Content="Izmeni" />
-            <Button
-                Width="80"
-                Command="{Binding DeleteMonitoringCommand}"
-                Content="Obriši" />
-        </StackPanel>
+        <Border
+            Grid.Column="2"
+            Padding="12"
+            Background="#FAFAFA"
+            BorderBrush="#DDDDDD"
+            BorderThickness="1"
+            CornerRadius="6">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <TextBlock
+                    Grid.Row="0"
+                    Margin="0,0,0,8"
+                    FontWeight="SemiBold"
+                    Text="Pregled stanja (uživo)" />
+                <lvc:PieChart
+                    Grid.Row="1"
+                    LegendPosition="{x:Static lvcMeasure:LegendPosition.Bottom}"
+                    Series="{Binding ChartViewModel.Series}" />
+            </Grid>
+        </Border>
     </Grid>
 </UserControl>
