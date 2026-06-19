@@ -23,10 +23,6 @@ namespace Statistics.Clients
             return _channel.GetAllArtworks();
         }
 
-        public List<ArtworkMonitoring> GetAllMonitorings()
-        {
-            return _channel.GetAllMonitorings();
-        }
 
         public List<ArtworkMonitoring> GetMonitoringsByArtworkAndMonth(Guid artworkId, int month, int year)
         {

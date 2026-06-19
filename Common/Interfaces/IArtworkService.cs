@@ -11,9 +11,6 @@ namespace Common.Interfaces
     {
         [OperationContract]
         List<Artwork> GetAllArtworks();
-
-        [OperationContract]
-        List<ArtworkMonitoring> GetAllMonitorings();
         [OperationContract]
         List<ArtworkMonitoring> GetMonitoringsByArtworkAndMonth(Guid artworkId, int month, int year);
     }

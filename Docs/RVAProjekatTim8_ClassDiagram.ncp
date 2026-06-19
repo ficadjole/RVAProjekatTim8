@@ -1,0 +1,787 @@
+<Project>
+  <Name>RVAProjekat</Name>
+  <ProjectItem type="NClass.DiagramEditor.ClassDiagram.ClassDiagram" assembly="NClass.DiagramEditor, Version=2.8.0.2, Culture=neutral, PublicKeyToken=null">
+    <Name>Projekat</Name>
+    <Language>CSharp</Language>
+    <Entities>
+      <Entity type="Class">
+        <Name>ArtworkMonitoring</Name>
+        <Access>Public</Access>
+        <Location left="244" top="32" />
+        <Size width="186" height="216" />
+        <Collapsed>False</Collapsed>
+        <Member type="Property">public Guid Id { get; set; }</Member>
+        <Member type="Property">public Guid ArtworkId { get; set; }</Member>
+        <Member type="Property">public DateTime MonitoringTime { get; set; }</Member>
+        <Member type="Property">public double LightExposure { get; set; }</Member>
+        <Member type="Property">public double AirPollution { get; set; }</Member>
+        <Member type="Property">public ArtworkCondition State { get; set; }</Member>
+        <Member type="Property">public Event PropertyChanged { get; set; }</Member>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Enum">
+        <Name>ArtworkCondition</Name>
+        <Access>Public</Access>
+        <Location left="256" top="314" />
+        <Size width="162" height="216" />
+        <Collapsed>False</Collapsed>
+        <Value>Pristine</Value>
+        <Value>MinorWear</Value>
+        <Value>Deteriorating</Value>
+        <Value>Critical</Value>
+      </Entity>
+      <Entity type="Class">
+        <Name>Artwork</Name>
+        <Access>Public</Access>
+        <Location left="461" top="32" />
+        <Size width="162" height="216" />
+        <Collapsed>False</Collapsed>
+        <Member type="Property">public Guid Id { get; set; }</Member>
+        <Member type="Property">public string Title { get; set; }</Member>
+        <Member type="Property">public string Artist { get; set; }</Member>
+        <Member type="Property">public string Medium { get; set; }</Member>
+        <Member type="Property">public int YearCreated { get; set; }</Member>
+        <Member type="Property">public string Style { get; set; }</Member>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Class">
+        <Name>ArtworkRepository</Name>
+        <Access>Public</Access>
+        <Location left="12" top="614" />
+        <Size width="218" height="216" />
+        <Collapsed>False</Collapsed>
+        <Member type="Property">public ObservableCollection&lt;Artwork&gt; Artworks { get; set; }</Member>
+        <Member type="Method">public void Load()</Member>
+        <Member type="Method">public void Save()</Member>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Class">
+        <Name>ArtworkMonitoringRepository</Name>
+        <Access>Public</Access>
+        <Location left="264" top="614" />
+        <Size width="234" height="216" />
+        <Collapsed>False</Collapsed>
+        <Member type="Property">public ObservableCollection&lt;ArtworkMonitoring&gt; Monitorings { get; set; }</Member>
+        <Member type="Method">public void Load()</Member>
+        <Member type="Method">public void Save()</Member>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Interface">
+        <Name>IPersistenceService</Name>
+        <Access>Public</Access>
+        <Location left="60" top="923" />
+        <Size width="162" height="216" />
+        <Collapsed>False</Collapsed>
+        <Member type="Method">List&lt;T&gt; Load()</Member>
+        <Member type="Method">void Save(IEnumerable&lt;T&gt; items)</Member>
+      </Entity>
+      <Entity type="Class">
+        <Name>JsonPersistenceService</Name>
+        <Access>Public</Access>
+        <Location left="60" top="1205" />
+        <Size width="162" height="216" />
+        <Collapsed>False</Collapsed>
+        <Member type="Field">string _filePath</Member>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Interface">
+        <Name>IInitialDataProvider</Name>
+        <Access>Public</Access>
+        <Location left="408" top="923" />
+        <Size width="162" height="216" />
+        <Collapsed>False</Collapsed>
+        <Member type="Method">List&lt;T&gt; GetInitialData()</Member>
+      </Entity>
+      <Entity type="Class">
+        <Name>ArtworkInitialDataProvider</Name>
+        <Access>Public</Access>
+        <Location left="306" top="1201" />
+        <Size width="162" height="216" />
+        <Collapsed>False</Collapsed>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Class">
+        <Name>ArtworkMonitoringInitialDataProvider</Name>
+        <Access>Public</Access>
+        <Location left="505" top="1202" />
+        <Size width="162" height="216" />
+        <Collapsed>False</Collapsed>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Interface">
+        <Name>IUndoableCommand</Name>
+        <Access>Public</Access>
+        <Location left="1193" top="899" />
+        <Size width="162" height="216" />
+        <Collapsed>False</Collapsed>
+        <Member type="Method">void Execute()</Member>
+        <Member type="Method">void Undo()</Member>
+        <Member type="Method">string GetDescription()</Member>
+      </Entity>
+      <Entity type="Class">
+        <Name>AddArtworkCommand</Name>
+        <Access>Public</Access>
+        <Location left="720" top="1202" />
+        <Size width="162" height="216" />
+        <Collapsed>False</Collapsed>
+        <Member type="Field">ObservableCollection&lt;ArtWork&gt; _targetCollection</Member>
+        <Member type="Field">Artwork _artworkToAdd</Member>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Class">
+        <Name>DeleteArtworkCommand</Name>
+        <Access>Public</Access>
+        <Location left="911" top="1203" />
+        <Size width="162" height="216" />
+        <Collapsed>False</Collapsed>
+        <Member type="Field">Artwork _artworkToDelete</Member>
+        <Member type="Field">int originalIndex</Member>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Class">
+        <Name>EditArtworkCommand</Name>
+        <Access>Public</Access>
+        <Location left="1096" top="1205" />
+        <Size width="162" height="216" />
+        <Collapsed>False</Collapsed>
+        <Member type="Field">Artwork _originalSnapshot</Member>
+        <Member type="Field">Artwork _updatedSnapshot</Member>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Class">
+        <Name>AddArtworkMonitoringCommand</Name>
+        <Access>Public</Access>
+        <Location left="1296" top="1206" />
+        <Size width="162" height="216" />
+        <Collapsed>False</Collapsed>
+        <Member type="Field">readonly ObservableCollection&lt;Artwork&gt; _availableArtworks</Member>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Class">
+        <Name>DeleteArtworkMonitoringCommand</Name>
+        <Access>Public</Access>
+        <Location left="1484" top="1207" />
+        <Size width="162" height="216" />
+        <Collapsed>False</Collapsed>
+        <Member type="Field">ArtworkMonitoring _monitoringToDelete</Member>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Class">
+        <Name>EditArtworkMonitoringCommand</Name>
+        <Access>Public</Access>
+        <Location left="1666" top="1208" />
+        <Size width="162" height="216" />
+        <Collapsed>False</Collapsed>
+        <Member type="Field">ArtworkMonitoring _originalSnapshot</Member>
+        <Member type="Field">ArtworkMonitoring _updatedSnapshot</Member>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Class">
+        <Name>CommandHistory</Name>
+        <Access>Public</Access>
+        <Location left="1193" top="587" />
+        <Size width="162" height="216" />
+        <Collapsed>False</Collapsed>
+        <Member type="Field">Stack&lt;IUndoableCommand&gt; _undoStack</Member>
+        <Member type="Field">Stack&lt;IUndoableCommand&gt; _redoStack</Member>
+        <Member type="Field">public bool CanUndo</Member>
+        <Member type="Field">public bool CanRedo</Member>
+        <Member type="Field">public Event HistoryChanged</Member>
+        <Member type="Method">public void ExecuteCommand(IUndoableCommand cmd)</Member>
+        <Member type="Method">public void Undo()</Member>
+        <Member type="Method">public void Redo()</Member>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Interface">
+        <Name>IValidator</Name>
+        <Access>Public</Access>
+        <Location left="1579" top="587" />
+        <Size width="162" height="216" />
+        <Collapsed>False</Collapsed>
+        <Member type="Method">string ValidateProperty(T instance, string propertyName)</Member>
+      </Entity>
+      <Entity type="Class">
+        <Name>ArtworkValidator</Name>
+        <Access>Public</Access>
+        <Location left="1446" top="898" />
+        <Size width="162" height="216" />
+        <Collapsed>False</Collapsed>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Class">
+        <Name>ArtworkMonitoringValidator</Name>
+        <Access>Public</Access>
+        <Location left="1709" top="898" />
+        <Size width="162" height="216" />
+        <Collapsed>False</Collapsed>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Interface">
+        <Name>IDialogService</Name>
+        <Access>Public</Access>
+        <Location left="1955" top="898" />
+        <Size width="162" height="216" />
+        <Collapsed>False</Collapsed>
+        <Member type="Method">bool ShowDialog(object viewModel)</Member>
+      </Entity>
+      <Entity type="Class">
+        <Name>DialogService</Name>
+        <Access>Public</Access>
+        <Location left="1955" top="1198" />
+        <Size width="162" height="216" />
+        <Collapsed>False</Collapsed>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Interface">
+        <Name>ILogginService</Name>
+        <Access>Public</Access>
+        <Location left="2208" top="893" />
+        <Size width="162" height="216" />
+        <Collapsed>False</Collapsed>
+        <Member type="Method">void Log(string message)</Member>
+      </Entity>
+      <Entity type="Class">
+        <Name>FileLogginService</Name>
+        <Access>Public</Access>
+        <Location left="2208" top="1197" />
+        <Size width="162" height="216" />
+        <Collapsed>False</Collapsed>
+        <Member type="Field">string _filePath</Member>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Interface">
+        <Name>IArtworkConditionSimulator</Name>
+        <Access>Public</Access>
+        <Location left="2470" top="890" />
+        <Size width="162" height="216" />
+        <Collapsed>False</Collapsed>
+        <Member type="Method">void StartSimulating(ArtworkMonitoring monitoring)</Member>
+        <Member type="Method">void StopSimulating(Guid monitoringId)</Member>
+      </Entity>
+      <Entity type="Class">
+        <Name>ArtworkConditionSimulator</Name>
+        <Access>Public</Access>
+        <Location left="2474" top="1192" />
+        <Size width="162" height="216" />
+        <Collapsed>False</Collapsed>
+        <Member type="Field">TimeSpan _interval</Member>
+        <Member type="Field">Dictionary&lt;Guid, DispatcherTime&gt; _activeTimers</Member>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Class">
+        <Name>ArtworkConditionChartViewModel</Name>
+        <Access>Public</Access>
+        <Location left="2732" top="889" />
+        <Size width="162" height="216" />
+        <Collapsed>False</Collapsed>
+        <Member type="Field">ObservableCollection&lt;ArtworkMonitorings&gt; _monitorings</Member>
+        <Member type="Field">Dictionary&lt;ArtworkCondition, ObservableValue&gt; _counters</Member>
+        <Member type="Property">public ISeries[] Series { get; }</Member>
+        <Member type="Method">public void Recalculate()</Member>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Interface">
+        <Name>ICloseable</Name>
+        <Access>Public</Access>
+        <Location left="2209" top="358" />
+        <Size width="162" height="108" />
+        <Collapsed>False</Collapsed>
+        <Member type="Event">event EventHandler CloseRequested</Member>
+      </Entity>
+      <Entity type="Class">
+        <Name>ArtworkEditViewModel</Name>
+        <Access>Public</Access>
+        <Location left="2209" top="554" />
+        <Size width="162" height="279" />
+        <Collapsed>False</Collapsed>
+        <Member type="Property">public string Title { get; set; }</Member>
+        <Member type="Property">public string Artist { get; set; }</Member>
+        <Member type="Property">public string Medium { get; set; }</Member>
+        <Member type="Property">public int YearCreated { get; set; }</Member>
+        <Member type="Property">public string Style { get; set; }</Member>
+        <Member type="Property">public bool IsValid { get; set; }</Member>
+        <Member type="Property">public ICommand SaveCommand { get; }</Member>
+        <Member type="Property">public ICommand CancelCommand { get; set; }</Member>
+        <Member type="Event">public event EventHandler CloseRequested</Member>
+        <Member type="Event">public event EventHandler PropertyChanged</Member>
+        <Member type="Method">public Artwork ToModel()</Member>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Class">
+        <Name>RelayCommand</Name>
+        <Access>Public</Access>
+        <Location left="2433" top="359" />
+        <Size width="162" height="216" />
+        <Collapsed>False</Collapsed>
+        <Member type="Field">Action&lt;object&gt; _execute</Member>
+        <Member type="Field">Predicate&lt;object&gt; _canExecute</Member>
+        <Member type="Method">public bool CanExecute(object param)</Member>
+        <Member type="Method">public void Execute(object param)</Member>
+        <Member type="Method">public void RaiseCanExecuteChanged()</Member>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Class">
+        <Name>ArtworkMonitoringListViewModel</Name>
+        <Access>Public</Access>
+        <Location left="1792" top="336" />
+        <Size width="162" height="216" />
+        <Collapsed>False</Collapsed>
+        <Member type="Property">public OBbservableCollection&lt;ArtworkMonitoring&gt; Monitorings { get; set; }</Member>
+        <Member type="Property">public ArtworkConditionChartViewModel ChartViewModel { get; set; }</Member>
+        <Member type="Property">public ICommand AddMonitoringCommand { get; }</Member>
+        <Member type="Property">public ICommand EditMonitoringCommand { get; }</Member>
+        <Member type="Property">public ICommand DeleteMonitoringCommand { get; }</Member>
+        <Member type="Event">public event EventHandler PropertyChanged</Member>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Class">
+        <Name>ActivityLogService</Name>
+        <Access>Public</Access>
+        <Location left="2000" top="429" />
+        <Size width="162" height="216" />
+        <Collapsed>False</Collapsed>
+        <Member type="Method">public void SubscribeTo(CommandHistory history)</Member>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Class">
+        <Name>ArtworkListViewModel</Name>
+        <Access>Public</Access>
+        <Location left="1513" top="336" />
+        <Size width="162" height="216" />
+        <Collapsed>False</Collapsed>
+        <Member type="Property">public ObservableCollection&lt;Artwork&gt; Artworks { get; set; }</Member>
+        <Member type="Property">public Artwork SelectedArtwork { get; set; }</Member>
+        <Member type="Property">public ICommand AddArtworkCommand { get; }</Member>
+        <Member type="Property">public ICommand EditArtworkCommand { get; }</Member>
+        <Member type="Property">public ICommand DeleteArtworkCommand { get; }</Member>
+        <Member type="Event">public event EventHandler PropertyChanged</Member>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Class">
+        <Name>MainWindowViewModel</Name>
+        <Access>Public</Access>
+        <Location left="1671" top="54" />
+        <Size width="162" height="216" />
+        <Collapsed>False</Collapsed>
+        <Member type="Property">public ArtworkListViewModel ArtworkListViewModel { get; }</Member>
+        <Member type="Property">public ArtworkMonitoringListViewModel MonitoringListViewModel { get; }</Member>
+        <Member type="Property">public ICommand UndoCommand { get; }</Member>
+        <Member type="Property">public ICommand RedoCommand { get; }</Member>
+        <Member type="Event">public event EventHandler PropertyChanged</Member>
+        <Modifier>None</Modifier>
+      </Entity>
+    </Entities>
+    <Containers />
+    <Relationships>
+      <Relationship type="Association" first="0" second="1">
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+        <Direction>Unidirectional</Direction>
+        <AssociationType>Association</AssociationType>
+      </Relationship>
+      <Relationship type="Realization" first="6" second="5">
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+      </Relationship>
+      <Relationship type="Realization" first="8" second="7">
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+        <BendPoint relativeToStartShape="True">
+          <X>387</X>
+          <Y>1176</Y>
+        </BendPoint>
+        <BendPoint relativeToStartShape="False">
+          <X>489</X>
+          <Y>1164</Y>
+        </BendPoint>
+      </Relationship>
+      <Relationship type="Realization" first="9" second="7">
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+      </Relationship>
+      <Relationship type="Realization" first="11" second="10">
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+      </Relationship>
+      <Relationship type="Realization" first="12" second="10">
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+      </Relationship>
+      <Relationship type="Realization" first="13" second="10">
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+      </Relationship>
+      <Relationship type="Realization" first="14" second="10">
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+      </Relationship>
+      <Relationship type="Realization" first="15" second="10">
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+      </Relationship>
+      <Relationship type="Realization" first="16" second="10">
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+      </Relationship>
+      <Relationship type="Association" first="17" second="10">
+        <Label>izvrsava</Label>
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+        <Direction>Unidirectional</Direction>
+        <AssociationType>Aggregation</AssociationType>
+      </Relationship>
+      <Relationship type="Realization" first="19" second="18">
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+      </Relationship>
+      <Relationship type="Realization" first="20" second="18">
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+      </Relationship>
+      <Relationship type="Realization" first="22" second="21">
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+      </Relationship>
+      <Relationship type="Realization" first="24" second="23">
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+      </Relationship>
+      <Relationship type="Realization" first="26" second="25">
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+      </Relationship>
+      <Relationship type="Realization" first="29" second="28">
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+        <BendPoint relativeToStartShape="False">
+          <X>2291</X>
+          <Y>491</Y>
+        </BendPoint>
+      </Relationship>
+      <Relationship type="Association" first="34" second="33">
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+        <Direction>Unidirectional</Direction>
+        <AssociationType>Association</AssociationType>
+      </Relationship>
+      <Relationship type="Association" first="34" second="31">
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+        <BendPoint relativeToStartShape="False">
+          <X>1860</X>
+          <Y>311</Y>
+        </BendPoint>
+        <Direction>Unidirectional</Direction>
+        <AssociationType>Association</AssociationType>
+      </Relationship>
+      <Relationship type="Association" first="34" second="17">
+        <StartOrientation>Horizontal</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+        <BendPoint relativeToStartShape="True">
+          <X>1637</X>
+          <Y>177</Y>
+        </BendPoint>
+        <BendPoint relativeToStartShape="False">
+          <X>1274</X>
+          <Y>312</Y>
+        </BendPoint>
+        <Direction>Unidirectional</Direction>
+        <AssociationType>Association</AssociationType>
+      </Relationship>
+      <Relationship type="Association" first="3" second="5">
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+        <BendPoint relativeToStartShape="True">
+          <X>122</X>
+          <Y>859</Y>
+        </BendPoint>
+        <Direction>Unidirectional</Direction>
+        <AssociationType>Association</AssociationType>
+      </Relationship>
+      <Relationship type="Association" first="3" second="7">
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+        <BendPoint relativeToStartShape="False">
+          <X>454</X>
+          <Y>894</Y>
+        </BendPoint>
+        <Direction>Unidirectional</Direction>
+        <AssociationType>Association</AssociationType>
+      </Relationship>
+      <Relationship type="Association" first="4" second="7">
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+        <BendPoint relativeToStartShape="True">
+          <X>486</X>
+          <Y>857</Y>
+        </BendPoint>
+        <BendPoint relativeToStartShape="False">
+          <X>486</X>
+          <Y>898</Y>
+        </BendPoint>
+        <Direction>Unidirectional</Direction>
+        <AssociationType>Association</AssociationType>
+      </Relationship>
+      <Relationship type="Association" first="4" second="5">
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+        <BendPoint relativeToStartShape="True">
+          <X>486</X>
+          <Y>856</Y>
+        </BendPoint>
+        <BendPoint relativeToStartShape="False">
+          <X>148</X>
+          <Y>865</Y>
+        </BendPoint>
+        <Direction>Unidirectional</Direction>
+        <AssociationType>Association</AssociationType>
+      </Relationship>
+      <Relationship type="Association" first="33" second="3">
+        <StartOrientation>Horizontal</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+        <BendPoint relativeToStartShape="True">
+          <X>1488</X>
+          <Y>562</Y>
+        </BendPoint>
+        <BendPoint relativeToStartShape="False">
+          <X>130</X>
+          <Y>589</Y>
+        </BendPoint>
+        <Direction>Unidirectional</Direction>
+        <AssociationType>Association</AssociationType>
+      </Relationship>
+      <Relationship type="Association" first="31" second="4">
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+        <Direction>Unidirectional</Direction>
+        <AssociationType>Association</AssociationType>
+      </Relationship>
+      <Relationship type="Association" first="31" second="21">
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+        <Direction>Unidirectional</Direction>
+        <AssociationType>Association</AssociationType>
+      </Relationship>
+      <Relationship type="Association" first="33" second="21">
+        <StartOrientation>Horizontal</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+        <BendPoint relativeToStartShape="True">
+          <X>1795</X>
+          <Y>617</Y>
+        </BendPoint>
+        <Direction>Unidirectional</Direction>
+        <AssociationType>Association</AssociationType>
+      </Relationship>
+      <Relationship type="Association" first="32" second="23">
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+        <BendPoint relativeToStartShape="False">
+          <X>2190</X>
+          <Y>868</Y>
+        </BendPoint>
+        <Direction>Unidirectional</Direction>
+        <AssociationType>Association</AssociationType>
+      </Relationship>
+      <Relationship type="Association" first="31" second="25">
+        <StartOrientation>Horizontal</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+        <BendPoint relativeToStartShape="True">
+          <X>2775</X>
+          <Y>342</Y>
+        </BendPoint>
+        <Direction>Unidirectional</Direction>
+        <AssociationType>Association</AssociationType>
+      </Relationship>
+      <Relationship type="Association" first="31" second="27">
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+        <BendPoint relativeToStartShape="True">
+          <X>2402</X>
+          <Y>192</Y>
+        </BendPoint>
+        <Direction>Unidirectional</Direction>
+        <AssociationType>Association</AssociationType>
+      </Relationship>
+      <Relationship type="Association" first="29" second="18">
+        <StartOrientation>Horizontal</StartOrientation>
+        <EndOrientation>Horizontal</EndOrientation>
+        <Direction>Unidirectional</Direction>
+        <AssociationType>Association</AssociationType>
+      </Relationship>
+      <Relationship type="Association" first="33" second="18">
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Horizontal</EndOrientation>
+        <BendPoint relativeToStartShape="False">
+          <X>1527</X>
+          <Y>740</Y>
+        </BendPoint>
+        <Direction>Unidirectional</Direction>
+        <AssociationType>Association</AssociationType>
+      </Relationship>
+      <Relationship type="Association" first="31" second="18">
+        <StartOrientation>Horizontal</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+        <BendPoint relativeToStartShape="False">
+          <X>1702</X>
+          <Y>555</Y>
+        </BendPoint>
+        <Direction>Unidirectional</Direction>
+        <AssociationType>Association</AssociationType>
+      </Relationship>
+      <Relationship type="Association" first="33" second="17">
+        <StartOrientation>Horizontal</StartOrientation>
+        <EndOrientation>Horizontal</EndOrientation>
+        <Direction>Unidirectional</Direction>
+        <AssociationType>Association</AssociationType>
+      </Relationship>
+      <Relationship type="Association" first="31" second="17">
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Horizontal</EndOrientation>
+        <BendPoint relativeToStartShape="True">
+          <X>1860</X>
+          <Y>827</Y>
+        </BendPoint>
+        <BendPoint relativeToStartShape="False">
+          <X>1380</X>
+          <Y>720</Y>
+        </BendPoint>
+        <Direction>Unidirectional</Direction>
+        <AssociationType>Association</AssociationType>
+      </Relationship>
+      <Relationship type="Association" first="32" second="17">
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Horizontal</EndOrientation>
+        <BendPoint relativeToStartShape="True">
+          <X>2015</X>
+          <Y>815</Y>
+        </BendPoint>
+        <Direction>Unidirectional</Direction>
+        <AssociationType>Association</AssociationType>
+      </Relationship>
+    </Relationships>
+  </ProjectItem>
+  <ProjectItem type="NClass.DiagramEditor.ClassDiagram.ClassDiagram" assembly="NClass.DiagramEditor, Version=2.8.0.2, Culture=neutral, PublicKeyToken=null">
+    <Name>StatistikaKomponenta</Name>
+    <Language>CSharp</Language>
+    <Entities>
+      <Entity type="Interface">
+        <Name>IStatisticsStrategy</Name>
+        <Access>Public</Access>
+        <Location left="450" top="50" />
+        <Size width="260" height="120" />
+        <Collapsed>False</Collapsed>
+        <Member type="Method">string GetName()</Member>
+        <Member type="Method">string Calculate(List&lt;ArtworkMonitoring&gt; monitorings)</Member>
+      </Entity>
+      <Entity type="Class">
+        <Name>AverageLightStrategy</Name>
+        <Access>Public</Access>
+        <Location left="150" top="250" />
+        <Size width="200" height="100" />
+        <Collapsed>False</Collapsed>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Class">
+        <Name>MaxAirPollutionStrategy</Name>
+        <Access>Public</Access>
+        <Location left="480" top="250" />
+        <Size width="200" height="100" />
+        <Collapsed>False</Collapsed>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Class">
+        <Name>CriticalStateStrategy</Name>
+        <Access>Public</Access>
+        <Location left="800" top="250" />
+        <Size width="200" height="100" />
+        <Collapsed>False</Collapsed>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Class">
+        <Name>StatisticsViewModel</Name>
+        <Access>Public</Access>
+        <Location left="400" top="450" />
+        <Size width="360" height="520" />
+        <Collapsed>False</Collapsed>
+        <Member type="Field">private readonly ArtworkServiceClient _serviceClient</Member>
+        <Member type="Field">private Dictionary&lt;string, List&lt;ArtworkMonitoring&gt;&gt; _monitoringsByKey</Member>
+        <Member type="Property">public IStatisticsStrategy SelectedStrategy { get; set; }</Member>
+        <Member type="Property">public List&lt;Artwork&gt; Artworks { get; set; }</Member>
+        <Member type="Property">public Artwork SelectedArtwork { get; set; }</Member>
+        <Member type="Property">public int SelectedMonth { get; set; }</Member>
+        <Member type="Property">public int SelectedYear { get; set; }</Member>
+        <Member type="Property">public List&lt;int&gt; Months { get; }</Member>
+        <Member type="Property">public List&lt;int&gt; Years { get; }</Member>
+        <Member type="Property">public ObservableCollection&lt;string&gt; MonitoringDisplay { get; set; }</Member>
+        <Member type="Property">public List&lt;IStatisticsStrategy&gt; StatisticsMethods { get; }</Member>
+        <Member type="Property">public string StatisticsResult { get; set; }</Member>
+        <Member type="Property">public ICommand FetchDataCommand { get; }</Member>
+        <Member type="Property">public ICommand ExportCsvCommand { get; }</Member>
+        <Member type="Method">private void LoadArtworks()</Member>
+        <Member type="Method">private void FetchData()</Member>
+        <Member type="Method">private void UpdateDisplay()</Member>
+        <Member type="Method">private void CalculateStatistics()</Member>
+        <Member type="Method">private void ExportToCsv()</Member>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Class">
+        <Name>ArtworkServiceClient</Name>
+        <Access>Public</Access>
+        <Location left="50" top="550" />
+        <Size width="280" height="140" />
+        <Collapsed>False</Collapsed>
+        <Member type="Method">public List&lt;Artwork&gt; GetAllArtworks()</Member>
+        <Member type="Method">public List&lt;ArtworkMonitoring&gt; GetMonitoringsByArtworkAndMonth(Guid id, int m, int y)</Member>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Class">
+        <Name>RelayCommand</Name>
+        <Access>Public</Access>
+        <Location left="150" top="712" />
+        <Size width="180" height="150" />
+        <Collapsed>False</Collapsed>
+        <Member type="Field">Action&lt;object&gt; _execute</Member>
+        <Member type="Field">Predicate&lt;object&gt; _canExecute</Member>
+        <Member type="Method">public bool CanExecute(object param)</Member>
+        <Member type="Method">public void Execute(object param)</Member>
+        <Modifier>None</Modifier>
+      </Entity>
+    </Entities>
+    <Containers />
+    <Relationships>
+      <Relationship type="Realization" first="1" second="0">
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+      </Relationship>
+      <Relationship type="Realization" first="2" second="0">
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+      </Relationship>
+      <Relationship type="Realization" first="3" second="0">
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+      </Relationship>
+      <Relationship type="Association" first="4" second="0">
+        <StartOrientation>Horizontal</StartOrientation>
+        <EndOrientation>Horizontal</EndOrientation>
+        <BendPoint relativeToStartShape="True">
+          <X>1199</X>
+          <Y>627</Y>
+        </BendPoint>
+        <BendPoint relativeToStartShape="False">
+          <X>794</X>
+          <Y>116</Y>
+        </BendPoint>
+        <Direction>Unidirectional</Direction>
+        <AssociationType>Association</AssociationType>
+      </Relationship>
+      <Relationship type="Association" first="4" second="5">
+        <Label>poziva</Label>
+        <StartOrientation>Horizontal</StartOrientation>
+        <EndOrientation>Horizontal</EndOrientation>
+        <Direction>Unidirectional</Direction>
+        <AssociationType>Association</AssociationType>
+      </Relationship>
+    </Relationships>
+  </ProjectItem>
+</Project>

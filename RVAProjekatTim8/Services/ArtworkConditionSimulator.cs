@@ -1,5 +1,6 @@
 ﻿using Common.Enums;
 using Common.Models;
+using RVAProjekatTim8.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Windows.Threading;
@@ -11,7 +12,7 @@ namespace RVAProjekatTim8.Services
     /// stanja iz ArtworkCondition enuma, redom, na fiksnom intervalu, dok ne
     /// dostigne terminalno stanje (Critical).
     /// </summary>
-    public class ArtworkConditionSimulator
+    public class ArtworkConditionSimulator : IArtworkConditionSimulator
     {
         private static readonly ArtworkCondition[] StateSequence = (ArtworkCondition[])Enum.GetValues(typeof(ArtworkCondition));
         private readonly TimeSpan _interval;

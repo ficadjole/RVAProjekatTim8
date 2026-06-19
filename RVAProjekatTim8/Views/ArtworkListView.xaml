@@ -10,6 +10,7 @@
     mc:Ignorable="d">
 
     <UserControl.Resources>
+
         <Style x:Key="SearchTextBoxStyle" TargetType="TextBox">
             <Setter Property="FontSize" Value="13" />
             <Setter Property="Background" Value="#FFFFFF" />
@@ -20,13 +21,17 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="TextBox">
-                        <Border x:Name="border" 
-                                BorderBrush="{TemplateBinding BorderBrush}" 
-                                BorderThickness="{TemplateBinding BorderThickness}" 
-                                Background="{TemplateBinding Background}" 
-                                CornerRadius="4" 
+                        <Border x:Name="border"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                Background="{TemplateBinding Background}"
+                                CornerRadius="6"
                                 SnapsToDevicePixels="True">
-                            <ScrollViewer x:Name="PART_ContentHost" Focusable="false" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden" Margin="8,5"/>
+                            <ScrollViewer x:Name="PART_ContentHost"
+                                          Focusable="false"
+                                          HorizontalScrollBarVisibility="Hidden"
+                                          VerticalScrollBarVisibility="Hidden"
+                                          Margin="32,5,8,5"/>
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="true">
@@ -45,59 +50,89 @@
         <Style x:Key="CrudButtonStyle" TargetType="Button">
             <Setter Property="FontSize" Value="13" />
             <Setter Property="FontWeight" Value="SemiBold" />
-            <Setter Property="Width" Value="90" />
             <Setter Property="Height" Value="36"/>
-            <Setter Property="Margin" Value="0,0,10,0" />
+            <Setter Property="Padding" Value="14,0"/>
+            <Setter Property="Margin" Value="0,0,8,0" />
             <Setter Property="Cursor" Value="Hand" />
             <Setter Property="Foreground" Value="White"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
-                        <Border x:Name="btnBorder" Background="{TemplateBinding Background}" CornerRadius="4" SnapsToDevicePixels="True">
+                        <Border x:Name="btnBorder"
+                                Background="{TemplateBinding Background}"
+                                CornerRadius="6"
+                                SnapsToDevicePixels="True"
+                                Padding="{TemplateBinding Padding}">
                             <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsEnabled" Value="False">
-                                <Setter TargetName="btnBorder" Property="Opacity" Value="0.5"/>
+                                <Setter TargetName="btnBorder" Property="Opacity" Value="0.45"/>
                             </Trigger>
                             <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="btnBorder" Property="Opacity" Value="0.9"/>
+                                <Setter TargetName="btnBorder" Property="Opacity" Value="0.88"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="btnBorder" Property="Opacity" Value="0.72"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
         </Style>
+
     </UserControl.Resources>
 
-    <Grid Background="#F8FAFC" Margin="20">
+    <Grid Background="#F7F9FC" Margin="20">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <Border Grid.Row="0" 
-                Background="White" 
-                CornerRadius="6" 
-                Padding="12,8" 
-                Margin="0,0,0,15"
+        <Border Grid.Row="0"
+                Background="White"
+                CornerRadius="8"
+                Padding="14,10"
+                Margin="0,0,0,12"
                 BorderBrush="#E2E8F0"
-                BorderThickness="1">
-            <StackPanel Orientation="Horizontal">
-                <TextBlock VerticalAlignment="Center" Margin="5,0,10,0" Foreground="#A0AEC0" FontSize="14"/>
-                <TextBlock Text="Pretraga dela:" VerticalAlignment="Center" FontWeight="SemiBold" Foreground="#4A5568" Margin="0,0,10,0" FontSize="13"/>
-                <TextBox Width="300" 
-                         Style="{StaticResource SearchTextBoxStyle}"
-                         Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"/>
-            </StackPanel>
+                BorderThickness="0.5">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
+                    <TextBlock Text="Umetnička dela"
+                               FontSize="14" FontWeight="SemiBold"
+                               Foreground="#1A202C" VerticalAlignment="Center"/>
+                    <Border Background="#EDF2F7" BorderBrush="#CBD5E0" BorderThickness="0.5"
+                            CornerRadius="10" Padding="8,2" Margin="10,0,0,0" VerticalAlignment="Center">
+                        <TextBlock Text="{Binding FilteredArtworks.Count}"
+                                   FontSize="12" Foreground="#718096"/>
+                    </Border>
+                </StackPanel>
+
+                <Grid Grid.Column="2" VerticalAlignment="Center">
+                    <TextBox Width="240" Height="34"
+                             Style="{StaticResource SearchTextBoxStyle}"
+                             Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"/>
+                    <TextBlock Text="&#xE721;"
+                               FontFamily="Segoe MDL2 Assets"
+                               FontSize="14"
+                               IsHitTestVisible="False"
+                               Margin="10,0,0,0"
+                               HorizontalAlignment="Left"
+                               VerticalAlignment="Center"
+                               Foreground="#A0AEC0"/>
+                </Grid>
+            </Grid>
         </Border>
 
-        <Border Grid.Row="1" Background="White" CornerRadius="6" BorderBrush="#E2E8F0" BorderThickness="1" Padding="5">
-            <Border.Effect>
-                <DropShadowEffect BlurRadius="10" Direction="270" ShadowDepth="1" Opacity="0.05"/>
-            </Border.Effect>
-
+        <Border Grid.Row="1" Background="White" CornerRadius="8"
+                BorderBrush="#E2E8F0" BorderThickness="0.5">
             <DataGrid
                 AutoGenerateColumns="False"
                 IsReadOnly="True"
@@ -105,70 +140,146 @@
                 SelectedItem="{Binding SelectedArtwork}"
                 Background="Transparent"
                 BorderThickness="0"
-                RowHeight="38"
+                RowBackground="White"
+                AlternatingRowBackground="#F8FAFC"
+                RowHeight="40"
                 GridLinesVisibility="Horizontal"
-                HorizontalGridLinesBrush="#E2E8F0"
+                HorizontalGridLinesBrush="#EDF2F7"
                 HeadersVisibility="Column"
                 SelectionMode="Single"
                 CanUserAddRows="False">
 
                 <DataGrid.ColumnHeaderStyle>
                     <Style TargetType="DataGridColumnHeader">
-                        <Setter Property="Background" Value="#EDF2F7" />
-                        <Setter Property="Foreground" Value="#2D3748" />
-                        <Setter Property="FontWeight" Value="Bold" />
-                        <Setter Property="Height" Value="35"/>
-                        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                        <Setter Property="Background" Value="#F7FAFC"/>
+                        <Setter Property="Foreground" Value="#718096"/>
+                        <Setter Property="FontWeight" Value="SemiBold"/>
+                        <Setter Property="FontSize" Value="11"/>
+                        <Setter Property="Height" Value="36"/>
+                        <Setter Property="HorizontalContentAlignment" Value="Left"/>
                         <Setter Property="VerticalContentAlignment" Value="Center"/>
-                        <Setter Property="BorderThickness" Value="0,0,0,2" />
-                        <Setter Property="BorderBrush" Value="#CBD5E0" />
+                        <Setter Property="Padding" Value="14,0"/>
+                        <Setter Property="BorderThickness" Value="0,0,0,1"/>
+                        <Setter Property="BorderBrush" Value="#E2E8F0"/>
                     </Style>
                 </DataGrid.ColumnHeaderStyle>
 
                 <DataGrid.RowStyle>
                     <Style TargetType="DataGridRow">
-                        <Setter Property="Background" Value="White" />
-                        <Setter Property="Foreground" Value="#2D3748" />
-                        <Setter Property="FontSize" Value="13" />
+                        <Setter Property="Foreground" Value="#2D3748"/>
+                        <Setter Property="FontSize" Value="13"/>
                         <Style.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
-                                <Setter Property="Background" Value="#F7FAFC" />
+                                <Setter Property="Background" Value="#EFF6FF"/>
                             </Trigger>
                             <Trigger Property="IsSelected" Value="True">
-                                <Setter Property="Background" Value="#EBF8FF" />
-                                <Setter Property="Foreground" Value="#2B6CB0" />
+                                <Setter Property="Background" Value="#EBF8FF"/>
+                                <Setter Property="Foreground" Value="#1A5FA8"/>
                             </Trigger>
                         </Style.Triggers>
                     </Style>
                 </DataGrid.RowStyle>
 
+                <DataGrid.CellStyle>
+                    <Style TargetType="DataGridCell">
+                        <Setter Property="BorderThickness" Value="0"/>
+                        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+                    </Style>
+                </DataGrid.CellStyle>
+
                 <DataGrid.Columns>
-                    <DataGridTextColumn Width="*" Binding="{Binding Title}" Header="Naziv" />
-                    <DataGridTextColumn Width="*" Binding="{Binding Artist}" Header="Autor" />
-                    <DataGridTextColumn Width="*" Binding="{Binding Medium}" Header="Tehnika" />
-                    <DataGridTextColumn Width="90" Binding="{Binding YearCreated}" Header="Godina" />
-                    <DataGridTextColumn Width="*" Binding="{Binding Style}" Header="Stil" />
+
+                    <DataGridTextColumn Width="*" Binding="{Binding Title}" Header="NAZIV">
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="FontWeight" Value="Medium"/>
+                                <Setter Property="VerticalAlignment" Value="Center"/>
+                                <Setter Property="Padding" Value="14,0"/>
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+
+                    <DataGridTextColumn Width="*" Binding="{Binding Artist}" Header="AUTOR">
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="VerticalAlignment" Value="Center"/>
+                                <Setter Property="Padding" Value="14,0"/>
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+
+                    <DataGridTextColumn Width="*" Binding="{Binding Medium}" Header="TEHNIKA">
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="VerticalAlignment" Value="Center"/>
+                                <Setter Property="Padding" Value="14,0"/>
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+
+                    <DataGridTemplateColumn Width="100" Header="GODINA" SortMemberPath="YearCreated">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Border Background="#EDF2F7" BorderBrush="#CBD5E0" BorderThickness="0.5"
+                                        CornerRadius="4" Padding="7,2"
+                                        HorizontalAlignment="Left" Margin="14,0,0,0">
+                                    <TextBlock Text="{Binding YearCreated}" FontSize="12" Foreground="#4A5568"/>
+                                </Border>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
+                    <DataGridTemplateColumn Width="*" Header="STIL" SortMemberPath="Style">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Border Background="#EEF2FF" BorderBrush="#C7D2FE" BorderThickness="0.5"
+                                        CornerRadius="12" Padding="10,3"
+                                        HorizontalAlignment="Left" Margin="14,0,0,0">
+                                    <TextBlock Text="{Binding Style}" FontSize="12" Foreground="#4338CA"/>
+                                </Border>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+
                 </DataGrid.Columns>
             </DataGrid>
         </Border>
 
-        <StackPanel Grid.Row="2" Margin="0,15,0,0" Orientation="Horizontal" HorizontalAlignment="Left">
+        <Grid Grid.Row="2" Margin="0,12,0,0">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
 
-            <Button Style="{StaticResource CrudButtonStyle}"
-                    Background="#319795"
-                    Command="{Binding AddArtworkCommand}"
-                    Content="Dodaj" />
+                <Button Style="{StaticResource CrudButtonStyle}"
+                        Background="#2C9E8E"
+                        Command="{Binding AddArtworkCommand}">
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <TextBlock Text="&#xE710;" FontFamily="Segoe MDL2 Assets"
+                                   FontSize="13" Margin="0,0,6,0" VerticalAlignment="Center"/>
+                        <TextBlock Text="Dodaj" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Button>
 
-            <Button Style="{StaticResource CrudButtonStyle}"
-                    Background="#2B6CB0"
-                    Command="{Binding EditArtworkCommand}"
-                    Content="Izmeni" />
+                <Button Style="{StaticResource CrudButtonStyle}"
+                        Background="#2563EB"
+                        Command="{Binding EditArtworkCommand}">
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <TextBlock Text="&#xE70F;" FontFamily="Segoe MDL2 Assets"
+                                   FontSize="13" Margin="0,0,6,0" VerticalAlignment="Center"/>
+                        <TextBlock Text="Izmeni" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Button>
 
-            <Button Style="{StaticResource CrudButtonStyle}"
-                    Background="#E53E3E"
-                    Command="{Binding DeleteArtworkCommand}"
-                    Content="Obriši" />
+                <Button Style="{StaticResource CrudButtonStyle}"
+                        Background="#DC2626"
+                        Command="{Binding DeleteArtworkCommand}">
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <TextBlock Text="&#xE74D;" FontFamily="Segoe MDL2 Assets"
+                                   FontSize="13" Margin="0,0,6,0" VerticalAlignment="Center"/>
+                        <TextBlock Text="Obriši" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Button>
 
-        </StackPanel>
+            </StackPanel>
+        </Grid>
+
     </Grid>
 </UserControl>

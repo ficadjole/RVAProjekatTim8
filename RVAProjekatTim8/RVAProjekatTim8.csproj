@@ -141,6 +141,7 @@
     <Compile Include="Commands\EditArtworkMonitoringCommand.cs" />
     <Compile Include="Enums\CommandAction.cs" />
     <Compile Include="Helpers\RelayCommand.cs" />
+    <Compile Include="Interfaces\IArtworkConditionSimulator.cs" />
     <Compile Include="Interfaces\ICloseable.cs" />
     <Compile Include="Interfaces\IDialogService.cs" />
     <Compile Include="Interfaces\IInitialDataProvider.cs" />

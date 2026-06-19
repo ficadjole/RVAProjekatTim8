@@ -27,10 +27,6 @@ namespace RVAProjekatTim8.Services
             return new List<Artwork>(_artworkRepository.Artworks);
         }
 
-        public List<ArtworkMonitoring> GetAllMonitorings()
-        {
-            return new List<ArtworkMonitoring>(_monitoringRepository.Monitorings);
-        }
 
         public List<ArtworkMonitoring> GetMonitoringsByArtworkAndMonth(Guid artworkId, int month, int year)
         {
