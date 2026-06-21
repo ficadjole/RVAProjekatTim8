@@ -68,7 +68,8 @@ namespace RVAProjekatTim8
                 commandHistory,
                 dialogService,
                 artworkValidator,
-                artworkRepository);
+                artworkRepository,
+                artworkMonitoringRepository);
 
             var conditionSimulator = new ArtworkConditionSimulator();
 

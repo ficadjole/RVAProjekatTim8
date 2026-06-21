@@ -22,6 +22,7 @@ namespace RVAProjekatTim8.ViewModels
         private readonly IDialogService _dialogService;
         private readonly IValidator<Artwork> _artworkValidator;
         private readonly ArtworkRepository _artworkRepository;
+        private readonly ArtworkMonitoringRepository _monitoringsRepository;
         private readonly ICollectionView _artworksView;
         /// <summary>
         /// Izlaže direktno repository kolekciju. DataGrid u ArtworkListView.xaml
@@ -29,6 +30,7 @@ namespace RVAProjekatTim8.ViewModels
         /// (Add/Remove/Replace) jer je tip ObservableCollection.
         /// </summary>
         public ObservableCollection<Artwork> Artworks => _artworkRepository.Artworks;
+        public ObservableCollection<ArtworkMonitoring> Monitorings => _monitoringsRepository.Monitorings;
 
         public ICommand AddArtworkCommand { get; }
         public ICommand DeleteArtworkCommand { get; }
@@ -59,12 +61,14 @@ namespace RVAProjekatTim8.ViewModels
             CommandHistory commandHistory,
             IDialogService dialogService,
             IValidator<Artwork> artworkValidator,
-            ArtworkRepository artworkRepository)
+            ArtworkRepository artworkRepository,
+            ArtworkMonitoringRepository monitoringRepository)
         {
             _commandHistory = commandHistory;
             _dialogService = dialogService;
             _artworkValidator = artworkValidator;
             _artworkRepository = artworkRepository;
+            _monitoringsRepository = monitoringRepository;
 
             _artworksView = CollectionViewSource.GetDefaultView(Artworks);
             _artworksView.Filter = FilterArtwork;
@@ -96,7 +100,7 @@ namespace RVAProjekatTim8.ViewModels
                 return;
             }
 
-            var command = new DeleteArtworkCommand(Artworks, SelectedArtwork);
+            var command = new DeleteArtworkCommand(Artworks, Monitorings, SelectedArtwork);
             _commandHistory.ExecuteCommand(command);
             SelectedArtwork = null;
         }
