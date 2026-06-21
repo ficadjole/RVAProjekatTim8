@@ -78,6 +78,8 @@ namespace Statistics.ViewModels
             set { _monitoringDisplay = value; OnPropertyChanged(nameof(MonitoringDisplay)); }
         }
 
+        public ICommand RefreshArtworksCommand { get; }
+
         public List<IStatisticsStrategy> StatisticsMethods { get; } = new List<IStatisticsStrategy>
 {
             new AverageLightStrategy(),
@@ -100,6 +102,7 @@ namespace Statistics.ViewModels
             _serviceClient = new ArtworkServiceClient();
             FetchDataCommand = new RelayCommand(_ => FetchData());
             ExportCsvCommand = new RelayCommand(_ => ExportToCsv());
+            RefreshArtworksCommand = new RelayCommand(_ => RefreshArtworks());
             LoadArtworks();
         }
 
@@ -122,8 +125,13 @@ namespace Statistics.ViewModels
             var monitorings = _serviceClient.GetMonitoringsByArtworkAndMonth(
                 SelectedArtwork.Id, SelectedMonth, SelectedYear);
 
-            var key = $"{SelectedArtwork.Id}-{SelectedMonth:D2}{SelectedYear}";
+            if (monitorings == null || monitorings.Count == 0)
+            {
+                StatisticsResult = $"Nema pronađenih merenja za delo \"{SelectedArtwork.Title}\" u izabranom periodu.";
+                return;
+            }
 
+            var key = $"{SelectedArtwork.Id}-{SelectedMonth:D2}{SelectedYear}";
             _monitoringsByKey[key] = monitorings;
 
             UpdateDisplay();
@@ -150,14 +158,21 @@ namespace Statistics.ViewModels
 
         private void CalculateStatistics()
         {
-            if (SelectedStrategy == null || _monitoringsByKey.Count == 0)
+            if (SelectedArtwork == null || SelectedStrategy == null) return;
+
+            var key = $"{SelectedArtwork.Id}-{SelectedMonth:D2}{SelectedYear}";
+
+            if (!_monitoringsByKey.ContainsKey(key) || _monitoringsByKey[key].Count == 0)
             {
-                StatisticsResult = string.Empty;
+                StatisticsResult = "Statistika ne može biti izračunata jer nema merenja za izabrani period.";
                 return;
             }
 
-            var allMonitorings = _monitoringsByKey.Values.SelectMany(m => m).ToList();
-            StatisticsResult = SelectedStrategy.Calculate(allMonitorings);
+            List<ArtworkMonitoring> trenutnaMerenja = _monitoringsByKey[key];
+
+            string rezultatStrategije = SelectedStrategy.Calculate(trenutnaMerenja);
+
+            StatisticsResult = $"Metoda: {SelectedStrategy.GetName()}\nRezultat: {rezultatStrategije}";
         }
 
         private void ExportToCsv()
@@ -176,6 +191,18 @@ namespace Statistics.ViewModels
 
             File.WriteAllLines("statistics_export.csv", lines);
             StatisticsResult = "Exportovano u statistics_export.csv!";
+        }
+
+        private void RefreshArtworks()
+        {
+            Guid? prethodniId = SelectedArtwork?.Id;
+
+            LoadArtworks();
+
+            if (prethodniId.HasValue)
+            {
+                SelectedArtwork = Artworks.FirstOrDefault(a => a.Id == prethodniId.Value);
+            }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

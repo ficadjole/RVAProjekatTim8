@@ -121,10 +121,10 @@
                 <DatePicker SelectedDate="{Binding MonitoringTime, ValidatesOnDataErrors=True}" />
 
                 <TextBlock Text="Izloženost svetlosti (lux):" />
-                <TextBox Text="{Binding LightExposure, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" />
+                <TextBox Text="{Binding LightExposure, ValidatesOnDataErrors=True, UpdateSourceTrigger=LostFocus}" />
 
                 <TextBlock Text="Zagađenost vazduha (μg/m³):" />
-                <TextBox Text="{Binding AirPollution, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" />
+                <TextBox Text="{Binding AirPollution, ValidatesOnDataErrors=True, UpdateSourceTrigger=LostFocus}" />
 
                 <TextBlock Text="Stanje:" />
                 <ComboBox ItemsSource="{Binding AvailableStates}" SelectedItem="{Binding State}" />

@@ -79,10 +79,21 @@
                 <StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
                         <TextBlock Text="Umetničko delo:" Width="130" VerticalAlignment="Center" FontWeight="Normal" Foreground="#4A5568"/>
-                        <ComboBox ItemsSource="{Binding Artworks}"
-                                  SelectedItem="{Binding SelectedArtwork}"
-                                  DisplayMemberPath="Title"
-                                  Width="250"/>
+
+                        <StackPanel Orientation="Horizontal">
+                            <ComboBox ItemsSource="{Binding Artworks}"
+                                      SelectedItem="{Binding SelectedArtwork}"
+                                      DisplayMemberPath="Title"
+                                      Width="250"/>
+
+                            <Button Content="🔄 Osveži" 
+                                    Command="{Binding RefreshArtworksCommand}"
+                                    Style="{StaticResource ModernButtonStyle}"
+                                    Background="#4A5568" 
+                                    Height="30"
+                                    Margin="10,0,0,0"
+                                    VerticalAlignment="Center"/>
+                        </StackPanel>
                     </StackPanel>
 
                     <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
