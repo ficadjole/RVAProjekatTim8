@@ -70,7 +70,7 @@ namespace RVAProjekatTim8
                 artworkValidator,
                 artworkRepository);
 
-            var conditionSimulator = new ArtworkConditionSimulator(TimeSpan.FromSeconds(7));
+            var conditionSimulator = new ArtworkConditionSimulator();
 
             var artworkMonitoringListViewModel = new ArtworkMonitoringListViewModel(
                 commandHistory,

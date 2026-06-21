@@ -136,13 +136,15 @@ namespace Statistics.ViewModels
 
             foreach (var kvp in _monitoringsByKey)
             {
-                string naslovDela = SelectedArtwork != null ? SelectedArtwork.Title : "Nepoznato delo";
-                string period = $"{SelectedMonth:D2}/{SelectedYear}";
+                int dashIdx = kvp.Key.LastIndexOf('-');
+                string artworkId = kvp.Key.Substring(0, dashIdx);
+                string monthYear = kvp.Key.Substring(dashIdx + 1); 
+                string period = $"{monthYear.Substring(0, 2)}/{monthYear.Substring(2)}"; 
 
                 var entries = string.Join(", ", kvp.Value.Select(m =>
-                    $"[Merenje ID: {m.Id.ToString().Substring(0, 5)}... -> Svetlost: {m.LightExposure}lx, Zagađenje: {m.AirPollution}ppm, Stanje: {m.State}]"));
+                    $"{{{m.Id}, {m.LightExposure}, {m.AirPollution}}}"));
 
-                MonitoringDisplay.Add($"Delo: \"{naslovDela}\" za period ({period}) -> {entries}");
+                MonitoringDisplay.Add($"[{artworkId}, {period}]: {entries}");
             }
         }
 
